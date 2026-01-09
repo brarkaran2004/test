@@ -11,7 +11,7 @@ jobs:
         steps:
             - name: ssh into server
               run: |
-                echo "${{secrets.SSH_KEY}} > ssh_key.pem
+                echo "${{secrets.SSH_KEY}}" > ssh_key.pem
                 chmod 400 ssh_key.pem
                 ssh -i ssh_key.pem ec2-user@54.87.129.204
                 cd test/
