@@ -31,5 +31,5 @@ jobs:
             pm2 restart fe
             pm2 restart http
             pm2 restart ws
-            REMOTE
+          REMOTE
 
