@@ -11,7 +11,9 @@ jobs:
         steps:
             - name: ssh into server
               run: |
-                ssh -i ${{secrets.SSH_KEY}} ec2-user@54.87.129.204
+                echo ${{secrets.SSH_KEY}} > ssh_key.pem
+                chmod 400 ssh_key.pem
+                ssh -i ssh_key.pem ec2-user@54.87.129.204
                 cd test/
                 git pull 
                 pnpm install
