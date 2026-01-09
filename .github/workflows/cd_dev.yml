@@ -10,4 +10,12 @@ jobs:
         name: Deploying everything to development cluster
         steps:
             - name: ssh into server
-              run : echo "hi"
+              run: |
+                ssh -i ${{secrets.SSH_KEY}} ec2-user@54.87.129.204
+                cd test/
+                git pull 
+                pnpm install
+                pnpm run build
+                pm2 restart fe-server
+                pm2 restart http-server
+                pm2 restart ws-server
