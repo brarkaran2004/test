@@ -12,7 +12,7 @@ jobs:
             - name: ssh into server
               run: |
                 echo "${{secrets.SSH_KEY}}" > ssh_key.pem
-                chmod 600 ssh_key.pem
+                chmod 700 ssh_key.pem
                 mkdir -p ~/.ssh
                 ssh-keyscan -H 54.87.129.204 >> ~/.ssh/known_hosts
                 ssh -i ssh_key.pem ec2-user@54.87.129.204
