@@ -11,7 +11,7 @@ export default async function Home() {
       {user?.password}
       <br />
       <div>
-        hi there
+        hi there tu kuch ni dekhya han diye je jatt ni dekhya
       </div>
     </div>
   );
