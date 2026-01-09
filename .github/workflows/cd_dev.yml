@@ -8,6 +8,8 @@ jobs:
   redeploy:
     name: Deploying everything to development cluster
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Deploy to development server
         run: |
