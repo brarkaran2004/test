@@ -3,3 +3,23 @@ on:
   push:
     branches:
       - "main"
+
+jobs:
+  redeploy:
+    name: Deploying everything to production cluster
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production server
+        run: |
+          echo "${{ secrets.SSH_KEY_PROD }}" > deploy_key.pem
+          chmod 600 deploy_key.pem
+          ssh -i deploy_key.pem -o StrictHostKeyChecking=no ${{ secrets.PROD_SERVER_USER }}@${{ secrets.PROD_SERVER_IP }} << 'EOF'
+            cd test/
+            git pull 
+            pnpm install
+            pnpm run build
+            pm2 restart fe-server
+            pm2 restart http-server
+            pm2 restart ws-server
+          EOF
+          rm -f deploy_key.pem

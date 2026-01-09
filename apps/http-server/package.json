@@ -16,7 +16,10 @@
     "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.1",
-    "express": "^5.1.0"
+    "bcrypt": "^5.1.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0"
   }
 }

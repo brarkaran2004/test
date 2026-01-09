@@ -7,9 +7,13 @@ export default async function Home() {
 
   return (
     <div>
-      {user?.username}
-      {user?.password}
-      <br />
+      <h1>Welcome</h1>
+      {user && (
+        <div>
+          <p>Username: {user.username}</p>
+          {/* Password should never be displayed on the frontend */}
+        </div>
+      )}
       <div>
         hi there
       </div>
