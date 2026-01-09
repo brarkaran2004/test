@@ -10,7 +10,7 @@ jobs:
         steps:
             - name: ssh into server
             - run: |
-                ssh -i ${{secrets.SSH_KEY}} root@165.232.63.239
+                ssh -i ${{secrets.SSH_KEY}} ec2-user@54.87.129.204
                 cd test/
                 git pull 
                 pnpm install
