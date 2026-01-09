@@ -11,9 +11,7 @@ jobs:
         steps:
             - name: ssh into server
               run: |
-                cat > ssh_key.pem <<'EOF'
-                ${{ secrets.SSH_KEY }}
-                EOF
+                echo "${{secrets.SSH_KEY}}" > ssh_key.pem
                 chmod 600 ssh_key.pem
                 mkdir -p ~/.ssh
                 ssh-keyscan -H 54.87.129.204 >> ~/.ssh/known_hosts
