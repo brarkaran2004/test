@@ -1,26 +1,33 @@
 name: Deploy to development
+
 on:
   push:
     branches:
-      - "main"
+      - main
 
 jobs:
-    redeploy:
-        runs-on: ubuntu-latest
-        name: Deploying everything to development cluster
-        steps:
-            - name: ssh into server
-              run: |
-                echo "${{secrets.SSH_KEY}}" > ssh_key.pem
-                chmod 700 ssh_key.pem
-                mkdir -p ~/.ssh
-                ssh-keyscan -H 54.87.129.204 >> ~/.ssh/known_hosts
-                ssh -i ssh_key.pem ec2-user@54.87.129.204
-                cd test/
-                git pull 
-                pnpm install
-                pnpm run build
-                pm2 restart fe-server
-                pm2 restart http-server
-                pm2 restart ws-server
+  redeploy:
+    runs-on: ubuntu-latest
+    name: Deploying everything to development cluster
 
+    steps:
+      - name: Deploy over SSH
+        run: |
+          set -e
+
+          cat > ssh_key.pem <<'EOF'
+          ${{ secrets.SSH_KEY }}
+          EOF
+          chmod 600 ssh_key.pem
+
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 54.87.129.204 >> ~/.ssh/known_hosts
+
+          ssh -i ssh_key.pem ec2-user@54.87.129.204 
+            cd ~/test
+            git pull
+            pnpm install
+            pnpm run build
+            pm2 restart fe-server
+            pm2 restart http-server
+            pm2 restart ws-server
