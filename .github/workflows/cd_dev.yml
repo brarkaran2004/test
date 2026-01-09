@@ -1,0 +1,20 @@
+name: Deploy to development
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+    redeploy:
+        name: Deploying everything to development cluster
+        steps:
+            - name: ssh into server
+            - run: |
+                ssh -i ${{secrets.SSH_KEY}} root@165.232.63.239
+                cd test/
+                git pull 
+                pnpm install
+                pnpm run build
+                pm2 restart fe-server
+                pm2 restart http-server
+                pm2 restart ws-server
