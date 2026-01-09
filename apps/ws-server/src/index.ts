@@ -14,8 +14,13 @@ const MAX_CONNECTIONS_PER_IP = 10;
 
 wss.on("connection", async (socket, request) => {
     try {
-        // Get client IP
-        const clientIp = request.socket.remoteAddress || 'unknown';
+        // Get client IP - reject if not available for security
+        const clientIp = request.socket.remoteAddress;
+        
+        if (!clientIp) {
+            socket.close(1008, "Unable to determine client IP");
+            return;
+        }
         
         // Check connection limit
         const currentConnections = connectionCounts.get(clientIp) || 0;

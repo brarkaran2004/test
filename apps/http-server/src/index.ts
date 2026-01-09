@@ -34,43 +34,47 @@ app.post("/signup", async(req, res) => {
         const username = req.body.username;
         const password = req.body.password;
 
-        // Input validation
-        if (!username || !password) {
-            return res.status(400).json({
-                error: "Username and password are required"
-            });
-        }
-
+        // Input validation - check types first
         if (typeof username !== 'string' || typeof password !== 'string') {
             return res.status(400).json({
-                error: "Invalid input types"
+                error: "Invalid input types - username and password must be strings"
             });
         }
 
-        if (username.length < 3 || username.length > 50) {
+        // Trim and validate non-empty
+        const trimmedUsername = username.trim();
+        const trimmedPassword = password.trim();
+
+        if (!trimmedUsername || !trimmedPassword) {
+            return res.status(400).json({
+                error: "Username and password are required and cannot be empty"
+            });
+        }
+
+        if (trimmedUsername.length < 3 || trimmedUsername.length > 50) {
             return res.status(400).json({
                 error: "Username must be between 3 and 50 characters"
             });
         }
 
-        if (password.length < 8) {
+        if (trimmedPassword.length < 8) {
             return res.status(400).json({
                 error: "Password must be at least 8 characters long"
             });
         }
 
         // Hash password before storing
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(trimmedPassword, 10);
 
         const user = await prismaClient.users.create({
             data: {
-                username: username,
+                username: trimmedUsername,
                 password: hashedPassword
             }
         })
 
         res.json({
-            message: "signup successfull!",
+            message: "signup successful!",
             id: user.id
         })
     } catch (error) {
